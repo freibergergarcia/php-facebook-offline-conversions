@@ -7,3 +7,5 @@
 saleTest.php
 .DS_Store
 .phan/
+.idea/
+.idea
