@@ -1,0 +1,7 @@
+.env.dev
+/vendor/
+.php_cs.cache
+/assets/
+/src/examples/
+/src/Pvh/
+saleTest.php
