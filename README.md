@@ -1,6 +1,8 @@
 # facebook-offline-conversions
 
-Send offline conversion events to a Facebook dataset reading from a csv file
+Send offline conversion events to a Facebook dataset reading from a csv file.
+
+https://developers.facebook.com/docs/marketing-api/offline-conversions
 
 ## Getting Started
 
