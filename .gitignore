@@ -1,8 +1,8 @@
 .env.dev
 /vendor/
 .php_cs.cache
-/assets/
-/src/examples/
+/assets/csv
+/examples/
 /src/Pvh/
 saleTest.php
 .DS_Store

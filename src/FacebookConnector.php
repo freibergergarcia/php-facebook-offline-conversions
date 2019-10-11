@@ -4,7 +4,7 @@ namespace Acme;
 
 use Facebook\Facebook;
 
-class FacebookConnector
+final class FacebookConnector
 {
     /**
      * @var Facebook

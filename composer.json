@@ -10,7 +10,8 @@
         "phpdocumentor/reflection-docblock": "^4.3",
         "symfony/dotenv": "^4.3",
         "league/csv": "^9.4",
-        "league/fractal": "^0.18.0"
+        "league/fractal": "^0.18.0",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {"Acme\\": "src/"}
@@ -26,7 +27,8 @@
         "squizlabs/php_codesniffer": "*",
         "phan/phan": "^2.2",
         "nunomaduro/phpinsights": "^1.9",
-        "phpmd/phpmd": "^2.7"
+        "phpmd/phpmd": "^2.7",
+        "behat/behat": "^3.5"
     },
     "scripts": {
         "test": "vendor/bin/phpunit  tests/SearchTest.php",

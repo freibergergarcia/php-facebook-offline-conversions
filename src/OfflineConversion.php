@@ -2,23 +2,17 @@
 
 namespace Acme;
 
-use Acme\Contracts\DataSourceInterface;
 use Acme\Contracts\OfflineConversionInterface;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Facebook\FacebookResponse;
 
-class PostOfflineConversion implements OfflineConversionInterface
+final class OfflineConversion implements OfflineConversionInterface
 {
     /**
      * @var Facebook
      */
     private $facebook;
-
-    /**
-     * @var $file
-     */
-    private $file;
 
     /**
      * @var mixed
@@ -33,32 +27,27 @@ class PostOfflineConversion implements OfflineConversionInterface
     /**
      * OfflineConversion constructor.
      *
-     * @param FacebookConnector   $facebook
-     * @param DataSourceInterface $file
+     * @param FacebookConnector $facebook
      */
-    public function __construct(FacebookConnector $facebook, DataSourceInterface $file)
-    {
+    public function __construct(
+        FacebookConnector $facebook
+    ) {
         $this->facebook = $facebook->getFacebook();
         $this->dataSet = $_ENV['VH_TEST_DATASET'];
-        $this->file = $file;
-        $this->file->readHeader()->readRecords(50, 200);
     }
 
     /**
+     * @param string $json
      * @throws FacebookSDKException
      */
-    public function sendRequest(): void
+    public function post(string $json): void
     {
-        $conversions = (new Result())->prepareDataToFacebook($this->file);
-
         try {
             $this->response = $this->facebook->post(
                 "/$this->dataSet/events",
                 array(
                     'upload_tag' => 'store_data',
-                    'data' => "[
-                    $conversions
-                  ]"
+                    'data' => "$json"
                 )
             );
         } catch (FacebookExceptionsFacebookResponseException $e) {
@@ -68,6 +57,26 @@ class PostOfflineConversion implements OfflineConversionInterface
         }
     }
 
+    /**
+     * @param string $eventDataSetId
+     * @throws FacebookSDKException
+     */
+    public function delete(string $eventDataSetId): void
+    {
+        try {
+            $this->response = $this->facebook->delete(
+                "/$eventDataSetId"
+            );
+        } catch (FacebookExceptionsFacebookResponseException $e) {
+            echo 'Graph returned an error: ' . $e->getMessage();
+        } catch (FacebookExceptionsFacebookSDKException $e) {
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+        }
+    }
+
+    /**
+     * @return FacebookResponse
+     */
     public function getResponse(): FacebookResponse
     {
         return $this->response;

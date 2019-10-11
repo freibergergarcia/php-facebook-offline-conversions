@@ -9,7 +9,7 @@ use League\Csv\Reader;
 use League\Csv\ResultSet;
 use League\Csv\Statement;
 
-class Csv implements DataSourceInterface
+final class Csv implements DataSourceInterface
 {
     /**
      * @var AbstractCsv
