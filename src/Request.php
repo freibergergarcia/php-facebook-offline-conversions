@@ -8,23 +8,48 @@ use Acme\Model\CustomData;
 use Acme\Model\MatchKey;
 use Acme\Model\Sale;
 use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook;
 use Facebook\FacebookResponse;
 use JsonSerializable;
 
 final class Request implements OfflineConversionInterface, JsonSerializable
 {
+    /**
+     * @var DataSourceInterface
+     */
     private $sale;
 
+    /**
+     * @var DataSourceInterface
+     */
     private $saleContents;
 
+    /**
+     * @var int
+     */
     private $dataSet;
 
+    /**
+     * @var array
+     */
     private $batch = [];
 
+    /**
+     * @var FacebookResponse
+     */
     private $response;
 
+    /**
+     * @var Facebook
+     */
     private $facebook;
 
+    /**
+     * Request constructor.
+     * @param FacebookConnector $facebook
+     * @param DataSourceInterface $sale
+     * @param DataSourceInterface $saleContents
+     */
     public function __construct(
         FacebookConnector $facebook,
         DataSourceInterface $sale,
@@ -39,9 +64,9 @@ final class Request implements OfflineConversionInterface, JsonSerializable
         $this->saleContents->readHeader()->readRecords(1, 50);
     }
 
-    public function build()
+    public function build(): void
     {
-        foreach ($this->sale->getRecords() as $key => $item) {
+        foreach ($this->sale->getRecords() as $item) {
             $this->batch[] = new Sale(
                 $item['order_id'],
                 new MatchKey($item['composite_key']),
@@ -53,12 +78,27 @@ final class Request implements OfflineConversionInterface, JsonSerializable
         }
     }
 
-    public function getBatch()
+    /**
+     * @return string
+     */
+    public function getBatch(): string
     {
         return json_encode($this->batch, JSON_PRETTY_PRINT);
     }
 
+    /**
+     * @return FacebookResponse
+     */
+    public function getResponse(): FacebookResponse
+    {
+        return $this->response;
+    }
 
+
+
+    /**
+     * @throws FacebookSDKException
+     */
     public function post(): void
     {
         try {
@@ -95,15 +135,13 @@ final class Request implements OfflineConversionInterface, JsonSerializable
         }
     }
 
-    public function getResponse(): FacebookResponse
-    {
-        return $this->response;
-    }
-
+    /**
+     * @return array|mixed
+     */
     public function jsonSerialize()
     {
         return [
-            $this->batch
+            $this->batch,
         ];
     }
 }

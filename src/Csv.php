@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Acme;
 
 use Acme\Contracts\DataSourceInterface;
@@ -26,15 +28,19 @@ final class Csv implements DataSourceInterface
      */
     private $records;
 
+    /**
+     * Csv constructor.
+     * @param string $filePath
+     */
     public function __construct(string $filePath)
     {
         $this->csv = Reader::createFromPath($filePath, 'r');
     }
 
     /**
-     * @return $this
+     * @return Csv
      */
-    public function readHeader()
+    public function readHeader(): Csv
     {
         $this->csv->setHeaderOffset(0);
         $this->header = $this->csv->getHeader();
@@ -62,7 +68,7 @@ final class Csv implements DataSourceInterface
     /**
      * @return array
      */
-    public function getHeader(): array
+    public function getHeader()
     {
         return $this->header;
     }

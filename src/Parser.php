@@ -11,7 +11,7 @@ final class Parser
     public static function formatEmail(string $email): string
     {
         $result = explode("-", $email, 2);
-        return (count($result) > 1) ? $result[1] : $result[0];
+        return count($result) > 1 ? $result[1] : $result[0];
     }
 
     /**

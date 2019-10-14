@@ -25,24 +25,21 @@
     "require-dev": {
         "phpunit/phpunit": "^8",
         "squizlabs/php_codesniffer": "*",
-        "phan/phan": "^2.2",
         "nunomaduro/phpinsights": "^1.9",
         "phpmd/phpmd": "^2.7",
         "behat/behat": "^3.5"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit  tests/SearchTest.php",
+        "test": "vendor/bin/phpunit",
         "cs": "vendor/bin/phpcs --standard=PSR12 src/",
-        "phan": "vendor/bin/phan --allow-polyfill-parser",
         "insights": "vendor/bin/phpinsights",
         "check": [
             "@test",
             "@cs",
-            "@phan",
             "@insights"
         ]
     },
     "scripts-descriptions": {
-        "check": "Run all the project scripts: PHPUNIT, PHPCS, PHAN"
+        "check": "Run all the project scripts: PHPUNIT, PHPCS, PHAN and INSIGHTS"
     }
 }

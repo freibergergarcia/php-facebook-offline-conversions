@@ -48,6 +48,15 @@ final class Sale implements JsonSerializable
      */
     private $contents = [];
 
+    /**
+     * Sale constructor.
+     * @param string $order_id
+     * @param MatchKey $match_key
+     * @param string $event_time
+     * @param float $value
+     * @param CustomData $custom_data
+     * @param ResultSet $contents
+     */
     public function __construct(
         string $order_id,
         MatchKey $match_key,
@@ -84,11 +93,17 @@ final class Sale implements JsonSerializable
         unset($this->order_id);
     }
 
+    /**
+     * @return array
+     */
     public function getContents(): array
     {
         return $this->contents;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return [
@@ -98,7 +113,7 @@ final class Sale implements JsonSerializable
             'value' => $this->value,
             'currency' => $this->currency,
             'contents' => $this->contents,
-            'custom_data' => $this->custom_data
+            'custom_data' => $this->custom_data,
         ];
     }
 }

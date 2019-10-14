@@ -11,10 +11,13 @@ final class CustomData implements JsonSerializable
      */
     private $event_source = 'in_store';
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return [
-            'event_source' => $this->event_source
+            'event_source' => $this->event_source,
         ];
     }
 }

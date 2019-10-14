@@ -11,10 +11,22 @@ Clone the repository in you local machine
 $ git clone https://github.com/freibergergarcia/facebook-offline-conversions.git
 ```
 
+### Setting up the environment variables
+
+You should edit the file [.env.dev](.env.dev) with the Facebook credentials. To get the credentials,
+follow the Setup items 1 to 6 on the offline conversion link above. 
+
 ### Requirements
 
 * PHP 7.2
 * Composer
+
+### Running the tests
+```
+$ vendor/bin/phpunit
+```
+If you need to change any of the config edit the [phpunit.xml](phpunit.xml).
+Logs can be seen [here](tmp/testdox.txt).
 
 ### Installing
 

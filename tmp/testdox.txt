@@ -1,0 +1,19 @@
+Csv (Acme\Csv)
+ [x] Read header must return an csv object
+ [x] Read header must return 4 results
+ [x] Read contents must return 3and 9 results
+ [x] Csv must create a object from a sales header file
+ [x] Read records must return an result set object
+
+Match Key (Acme\MatchKey)
+ [x] Json serialize must return a valid json
+ [x] Can construct match key class
+ [x] Cannot extend match key class
+
+Parser (Acme\Parser)
+ [x] Must return hashed key
+
+Request (Acme\Request)
+ [x] Must return a json object
+ [x] Json must return valid object
+
