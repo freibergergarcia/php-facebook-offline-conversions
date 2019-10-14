@@ -6,7 +6,7 @@ use Facebook\FacebookResponse;
 
 interface OfflineConversionInterface
 {
-    public function post(string $json): void;
+    public function post(): void;
 
     public function delete(string $eventDataSetId): void;
 

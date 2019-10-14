@@ -1,4 +1,4 @@
-composite_key,order_id,sale_date,total
+composite_key,order_id,event_time,value
 CK-freibergergarcia@gmail.com,231601028243,1/10/19 07:42,39.25
 CK-freibergergarcia@gmail.com,231601028246,1/10/19 09:06,24.52
 TH-freibergergarcia@gmail.com,231102043843,1/10/19 09:16,29.4

@@ -2,52 +2,73 @@
 
 namespace Acme;
 
+use Acme\Contracts\DataSourceInterface;
 use Acme\Contracts\OfflineConversionInterface;
+use Acme\Model\CustomData;
+use Acme\Model\MatchKey;
+use Acme\Model\Sale;
 use Facebook\Exceptions\FacebookSDKException;
-use Facebook\Facebook;
 use Facebook\FacebookResponse;
+use JsonSerializable;
 
-final class OfflineConversion implements OfflineConversionInterface
+final class Request implements OfflineConversionInterface, JsonSerializable
 {
-    /**
-     * @var Facebook
-     */
-    private $facebook;
+    private $sale;
 
-    /**
-     * @var mixed
-     */
+    private $saleContents;
+
     private $dataSet;
 
-    /**
-     * @var
-     */
+    private $batch = [];
+
     private $response;
 
-    /**
-     * OfflineConversion constructor.
-     *
-     * @param FacebookConnector $facebook
-     */
+    private $facebook;
+
     public function __construct(
-        FacebookConnector $facebook
+        FacebookConnector $facebook,
+        DataSourceInterface $sale,
+        DataSourceInterface $saleContents
     ) {
         $this->facebook = $facebook->getFacebook();
-        $this->dataSet = $_ENV['VH_TEST_DATASET'];
+
+        $this->sale = $sale;
+        $this->sale->readHeader()->readRecords(1, 10);
+
+        $this->saleContents = $saleContents;
+        $this->saleContents->readHeader()->readRecords(1, 50);
     }
 
-    /**
-     * @param string $json
-     * @throws FacebookSDKException
-     */
-    public function post(string $json): void
+    public function build()
+    {
+        foreach ($this->sale->getRecords() as $key => $item) {
+            $this->batch[] = new Sale(
+                $item['order_id'],
+                new MatchKey($item['composite_key']),
+                $item['event_time'],
+                $item['value'],
+                new CustomData(),
+                $this->saleContents->getRecords()
+            );
+        }
+    }
+
+    public function getBatch()
+    {
+        return json_encode($this->batch, JSON_PRETTY_PRINT);
+    }
+
+
+    public function post(): void
     {
         try {
+            $this->dataSet = $_ENV['VH_TEST_DATASET'];
+
             $this->response = $this->facebook->post(
                 "/$this->dataSet/events",
                 array(
                     'upload_tag' => 'store_data',
-                    'data' => "$json"
+                    'data' => $this->getBatch()
                 )
             );
         } catch (FacebookExceptionsFacebookResponseException $e) {
@@ -74,11 +95,15 @@ final class OfflineConversion implements OfflineConversionInterface
         }
     }
 
-    /**
-     * @return FacebookResponse
-     */
     public function getResponse(): FacebookResponse
     {
         return $this->response;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            $this->batch
+        ];
     }
 }
