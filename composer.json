@@ -27,7 +27,8 @@
         "squizlabs/php_codesniffer": "*",
         "nunomaduro/phpinsights": "^1.9",
         "phpmd/phpmd": "^2.7",
-        "behat/behat": "^3.5"
+        "behat/behat": "^3.5",
+        "php-coveralls/php-coveralls": "^2.1"
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
