@@ -1,4 +1,4 @@
-# facebook-offline-conversions
+# php-facebook-offline-conversions
 
 Send offline conversion events to a Facebook dataset reading from a csv file.
 
