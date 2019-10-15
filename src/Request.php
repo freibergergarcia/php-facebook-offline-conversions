@@ -12,6 +12,13 @@ use Facebook\Facebook;
 use Facebook\FacebookResponse;
 use JsonSerializable;
 
+/**
+ * Class Request
+ * @package Acme
+ * @todo This object has too many responsibilities at the moment,
+ *       maybe the build() and __construct could be done in a different
+ *       object.
+ */
 final class Request implements OfflineConversionInterface, JsonSerializable
 {
     /**
@@ -47,25 +54,27 @@ final class Request implements OfflineConversionInterface, JsonSerializable
     /**
      * Request constructor.
      * @param FacebookConnector $facebook
+     */
+    public function __construct(
+        FacebookConnector $facebook
+    ) {
+        $this->facebook = $facebook->getFacebook();
+    }
+
+    /**
      * @param DataSourceInterface $sale
      * @param DataSourceInterface $saleContents
      */
-    public function __construct(
-        FacebookConnector $facebook,
+    public function build(
         DataSourceInterface $sale,
         DataSourceInterface $saleContents
-    ) {
-        $this->facebook = $facebook->getFacebook();
-
+    ): void {
         $this->sale = $sale;
         $this->sale->readHeader()->readRecords(1, 10);
 
         $this->saleContents = $saleContents;
         $this->saleContents->readHeader()->readRecords(1, 50);
-    }
 
-    public function build(): void
-    {
         foreach ($this->sale->getRecords() as $item) {
             $this->batch[] = new Sale(
                 $item['order_id'],
@@ -77,24 +86,6 @@ final class Request implements OfflineConversionInterface, JsonSerializable
             );
         }
     }
-
-    /**
-     * @return string
-     */
-    public function getBatch(): string
-    {
-        return json_encode($this->batch, JSON_PRETTY_PRINT);
-    }
-
-    /**
-     * @return FacebookResponse
-     */
-    public function getResponse(): FacebookResponse
-    {
-        return $this->response;
-    }
-
-
 
     /**
      * @throws FacebookSDKException
@@ -133,6 +124,22 @@ final class Request implements OfflineConversionInterface, JsonSerializable
         } catch (FacebookExceptionsFacebookSDKException $e) {
             echo 'Facebook SDK returned an error: ' . $e->getMessage();
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getBatch(): string
+    {
+        return json_encode($this->batch, JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * @return FacebookResponse
+     */
+    public function getResponse(): FacebookResponse
+    {
+        return $this->response;
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Acme;
 
 use Acme\Contracts\DataSourceInterface;
+use CallbackFilterIterator;
 use League\Csv\AbstractCsv;
 use League\Csv\Exception;
 use League\Csv\Reader;
@@ -35,6 +36,14 @@ final class Csv implements DataSourceInterface
     public function __construct(string $filePath)
     {
         $this->csv = Reader::createFromPath($filePath, 'r');
+    }
+
+    /**
+     * @return CallbackFilterIterator
+     */
+    public function getCsv(): CallbackFilterIterator
+    {
+        return $this->csv->getRecords();
     }
 
     /**

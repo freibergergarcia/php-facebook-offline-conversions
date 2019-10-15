@@ -15,18 +15,9 @@ $dotenv->load(__DIR__ . '/.env', __DIR__ . '/.env.dev');
 // Initialize FB
 $facebook = new FacebookConnector();
 
-// Build Sale Object
-$saleFilePath = __DIR__ . '/assets/csv-example/SALEHEADER.csv';
-$saleHeader = new Csv($saleFilePath);
-
-// Build Sale Line Object
-$saleContentsFilePath = __DIR__ . '/assets/csv-example/SALELINE.csv';
-$saleContents = new Csv($saleContentsFilePath);
-
 // Make the Request
 $request = new Request($facebook);
-$request->build($saleHeader, $saleContents);
-$request->post();
+$request->delete('{Offline Event Set ID}');
 
 print_r($request->getResponse()->getGraphNode());
 

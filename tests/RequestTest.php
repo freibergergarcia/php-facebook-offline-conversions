@@ -53,8 +53,8 @@ class RequestTest extends TestCase
         $this->saleHeader->readHeader()->readRecords(1, 10);
         $this->saleContents->readHeader()->readRecords(1, 50);
 
-        $this->request = new Request($this->facebook, $this->saleHeader, $this->saleContents);
-        $this->request->build();
+        $this->request = new Request($this->facebook);
+        $this->request->build($this->saleHeader, $this->saleContents);
     }
 
     public function testMustReturnAJsonObject()
