@@ -7,6 +7,7 @@ use Acme\Contracts\OfflineConversionInterface;
 use Acme\Model\CustomData;
 use Acme\Model\MatchKey;
 use Acme\Model\Sale;
+use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Facebook\FacebookResponse;
@@ -102,9 +103,9 @@ final class Request implements OfflineConversionInterface, JsonSerializable
                     'data' => $this->getBatch()
                 )
             );
-        } catch (FacebookExceptionsFacebookResponseException $e) {
+        } catch (FacebookResponseException $e) {
             echo 'Graph returned an error: ' . $e->getMessage();
-        } catch (FacebookExceptionsFacebookSDKException $e) {
+        } catch (FacebookSDKException $e) {
             echo 'Facebook SDK returned an error: ' . $e->getMessage();
         }
     }
@@ -119,7 +120,7 @@ final class Request implements OfflineConversionInterface, JsonSerializable
             $this->response = $this->facebook->delete(
                 "/$eventDataSetId"
             );
-        } catch (FacebookExceptionsFacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             echo 'Graph returned an error: ' . $e->getMessage();
         } catch (FacebookExceptionsFacebookSDKException $e) {
             echo 'Facebook SDK returned an error: ' . $e->getMessage();

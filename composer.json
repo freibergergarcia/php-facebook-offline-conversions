@@ -4,9 +4,7 @@
     "description": "Send offline conversions to FB",
     "license":  "GPL-3.0-or-later",
     "require": {
-        "facebook/php-business-sdk": "^3.0.0",
         "facebook/graph-sdk" : "~5.0",
-        "facebook/php-ads-sdk": "2.8.*",
         "phpdocumentor/reflection-docblock": "^4.3",
         "symfony/dotenv": "^4.3",
         "league/csv": "^9.4",
